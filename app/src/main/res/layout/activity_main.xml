@@ -123,7 +123,7 @@
         app:layout_constraintTop_toTopOf="@id/iv_favourites_mode"
         app:layout_constraintBottom_toBottomOf="@id/iv_favourites_mode"
 
-        android:text="@string/select_on_map_label"
+        android:text="@string/favourites_label"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#FF000000" />
