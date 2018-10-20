@@ -4,10 +4,15 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.viatorfortis.guideme.BuildConfig;
 import com.viatorfortis.guideme.R;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Scanner;
 
 public class IziTravelApi {
 
@@ -34,6 +39,8 @@ public class IziTravelApi {
     private static final String CHILDREN_SEGMENT = "children";
 
     private static final String EXCEPT_PARAMETER = "except";
+
+    private static final String API_KEY_HEADER = "X-IZI-API-KEY";
 
     private static URL buildSearchRegionUrl(Context context, String languages, String query) {
 
@@ -123,4 +130,25 @@ public class IziTravelApi {
         return url;
     }
 
+    private static String getHttpResponse(Context context, URL url) throws IOException {
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestMethod(context.getString(R.string.http_get_method) );
+        urlConnection.setRequestProperty(API_KEY_HEADER, BuildConfig.iziTravelApiKey);
+
+        try {
+            InputStream in = urlConnection.getInputStream();
+
+            Scanner scanner = new Scanner(in);
+            scanner.useDelimiter("\\A");
+
+            boolean hasInput = scanner.hasNext();
+            if (hasInput) {
+                return scanner.next();
+            } else {
+                return null;
+            }
+        } finally {
+            urlConnection.disconnect();
+        }
+    }
 }

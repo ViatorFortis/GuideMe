@@ -18,4 +18,5 @@
 
     <string name="mtgo_publisher">publisher</string>
 
+    <string name="http_get_method">GET</string>
 </resources>
