@@ -151,4 +151,11 @@ public class IziTravelApi {
             urlConnection.disconnect();
         }
     }
+
+    public static String getRegionListJsonString(Context context, String languages, String query)
+            throws IOException {
+        URL url = buildSearchRegionUrl(context, languages, query);
+        return getHttpResponse(context, url);
+    }
+
 }
