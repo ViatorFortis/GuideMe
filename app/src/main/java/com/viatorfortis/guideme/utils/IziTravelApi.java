@@ -36,6 +36,10 @@ public class IziTravelApi {
 
     private static final String CITIES_SEGMENT = "cities";
 
+    public enum RegionType {
+        Country, City
+    }
+
     private static final String CHILDREN_SEGMENT = "children";
 
     private static final String EXCEPT_PARAMETER = "except";
@@ -64,32 +68,10 @@ public class IziTravelApi {
         return url;
     }
 
-    public static URL buildGetMuseumAndTourByCountryUrl(Context context, String countryUuid, String languages) {
+    public static URL buildGetMuseumAndTourByRegionUrl(Context context, RegionType regionType, String regionUuid, String languages) {
         Uri uri = Uri.parse(BASE_URL).buildUpon()
-                .appendEncodedPath(COUNTRIES_SEGMENT)
-                .appendEncodedPath(countryUuid)
-                .appendEncodedPath(CHILDREN_SEGMENT)
-                .appendQueryParameter(API_VERSION_PARAMETER, context.getString(R.string.api_version) )
-                .appendQueryParameter(LANGUAGES_PARAMETER, languages)
-                .appendQueryParameter(EXCEPT_PARAMETER, context.getString(R.string.mtgo_publisher))
-                .appendQueryParameter(LIMIT_PARAMETER, context.getString(R.string.mtgo_search_result_limit) )
-                .build();
-
-        URL url = null;
-
-        try {
-            url = new URL(uri.toString());
-        } catch (MalformedURLException e) {
-            Log.e(tag, e.getMessage() );
-        }
-
-        return url;
-    }
-
-    public static URL buildGetMuseumAndTourByCityUrl(Context context, String cityUuid, String languages) {
-        Uri uri = Uri.parse(BASE_URL).buildUpon()
-                .appendEncodedPath(CITIES_SEGMENT)
-                .appendEncodedPath(cityUuid)
+                .appendEncodedPath(regionType == RegionType.Country ? COUNTRIES_SEGMENT : CITIES_SEGMENT)
+                .appendEncodedPath(regionUuid)
                 .appendEncodedPath(CHILDREN_SEGMENT)
                 .appendQueryParameter(API_VERSION_PARAMETER, context.getString(R.string.api_version) )
                 .appendQueryParameter(LANGUAGES_PARAMETER, languages)
