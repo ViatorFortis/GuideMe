@@ -134,7 +134,7 @@ public class IziTravelApi {
         }
     }
 
-    public static String getRegionListJsonString(Context context, String languages, String query)
+    public static String getRegionListJson(Context context, String languages, String query)
             throws IOException {
         URL url = buildSearchRegionUrl(context, languages, query);
         return getHttpResponse(context, url);
