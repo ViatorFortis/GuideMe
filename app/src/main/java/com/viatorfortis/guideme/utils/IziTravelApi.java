@@ -140,4 +140,10 @@ public class IziTravelApi {
         return getHttpResponse(context, url);
     }
 
+    public static String getMuseumAndTourByRegionJson(Context context, RegionType regionType, String regionUuid, String languages)
+            throws IOException {
+        URL url = buildGetMuseumAndTourByRegionUrl(context, regionType, regionUuid, languages);
+        return getHttpResponse(context, url);
+    }
+
 }
