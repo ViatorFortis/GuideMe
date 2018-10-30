@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.viatorfortis.guideme.BuildConfig;
+//import com.viatorfortis.guideme.BuildConfig;
 import com.viatorfortis.guideme.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -62,7 +62,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startSearchByNameModeActivity () {
-        Toast.makeText(MainActivity.this,"start \"SearchByName\" mode", Toast.LENGTH_LONG).show();
+
+        //Toast.makeText(MainActivity.this,"BuildConfig.iziTravelApiKey " + BuildConfig.iziTravelApiKey, Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(this, SearchByNameModeActivity.class);
+        startActivity(intent);
+
+        //Toast.makeText(MainActivity.this,"start \"SearchByName\" mode", Toast.LENGTH_LONG).show();
     }
 
     private void nearestObjectsModeActivity () {
