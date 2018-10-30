@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_search_by_name"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+
+        android:theme="@style/AppTheme"
+        android:background="?attr/colorPrimaryDark"
+        app:titleTextColor="@color/textColorPrimary"
+        android:elevation="4dp"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/tv_searchField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="16dp"
+
+        android:textSize="32sp"
+        android:textColor="@color/textColorSecondary"
+        android:inputType="text"
+        android:hint="@string/search_edit_text_hint" />
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/search_button_text" />
+
+    <!--<fragment-->
+        <!--android:id="@+id/recipe_list_fragment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:name="com.viatorfortis.bebaker.ui.RecipeListFragment" />-->
+
+</LinearLayout>
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--xmlns:tools="http://schemas.android.com/tools"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--tools:context=".ui.SearchByNameModeActivity">-->
+<!--</android.support.constraint.ConstraintLayout>-->
