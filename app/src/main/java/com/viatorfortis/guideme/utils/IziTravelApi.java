@@ -140,13 +140,13 @@ public class IziTravelApi {
         return getHttpResponse(context, url);
     }
 
-    public static String getMuseumAndTourByRegionJson(Context context, RegionType regionType, String regionUuid, String languages)
+    public static String getMuseumAndTourListByRegionJson(Context context, RegionType regionType, String regionUuid, String languages)
             throws IOException {
         URL url = buildGetMuseumAndTourByRegionUrl(context, regionType, regionUuid, languages);
         return getHttpResponse(context, url);
     }
 
-    public static String getMuseumAndTourBySearchJson(Context context, String languages, String query)
+    public static String getMuseumAndTourListBySearchJson(Context context, String languages, String query)
             throws IOException {
         URL url = buildSearchMuseumAndTourUrl(context, languages, query);
         return getHttpResponse(context, url);
