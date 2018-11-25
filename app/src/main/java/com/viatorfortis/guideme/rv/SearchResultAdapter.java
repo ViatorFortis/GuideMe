@@ -115,4 +115,14 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         }
     }
+
+    public void addRegionList(ArrayList<Region> regionList) {
+        mRegionList.addAll(regionList);
+        notifyDataSetChanged();
+    }
+
+    public void addMTGObjectList(ArrayList<MTGObject> mtgObjectList) {
+        mMTGObjectList.addAll(mtgObjectList);
+        notifyDataSetChanged();
+    }
 }
