@@ -7,12 +7,12 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
-public class SearchMuseumsAndToursTask extends AsyncTask <String, Void, String> {
+public class SearchMTGObjectsTask extends AsyncTask <String, Void, String> {
 
     private final String Tag = this.getClass().getSimpleName();
     private Context context;
 
-    public SearchMuseumsAndToursTask(Context context) {
+    public SearchMTGObjectsTask(Context context) {
         this.context = context;
     }
 
