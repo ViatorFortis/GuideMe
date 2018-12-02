@@ -11,6 +11,8 @@ public class SearchRegionsTask extends AsyncTask <String, Void, String> {
 
     private final String Tag = "SearchRegionsTask";
     private Context context;
+    private String mLanguages;
+    private String mQuery;
 
     public SearchRegionsTask(Context context) {
         super();
@@ -20,6 +22,10 @@ public class SearchRegionsTask extends AsyncTask <String, Void, String> {
 
     @Override
     protected String doInBackground(String... searchParameters) {
+
+        mLanguages = searchParameters[0];
+        mQuery = searchParameters[1];
+
         try {
             return IziTravelApi.getRegionListJson(context, searchParameters[0], searchParameters[1]);
         } catch (IOException e) {
@@ -34,5 +40,10 @@ public class SearchRegionsTask extends AsyncTask <String, Void, String> {
         super.onPostExecute(result);
 
         Toast.makeText(context, "getRegionListJson() returns " + result, Toast.LENGTH_LONG).show();
+
+        String searchParameters[] = {mLanguages, mQuery};
+
+        SearchMTGObjectsTask searchMTGObjectsTask = new SearchMTGObjectsTask(context);
+        searchMTGObjectsTask.execute(searchParameters);
     }
 }
