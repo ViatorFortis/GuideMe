@@ -19,6 +19,6 @@
     <string name="mtgo_publisher">publisher</string>
 
     <string name="http_get_method">GET</string>
-    <string name="search_edit_text_hint">enter search text</string>
+    <string name="search_edit_text_hint">type search words</string>
     <string name="search_button_text">Search</string>
 </resources>
