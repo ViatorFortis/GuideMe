@@ -101,8 +101,8 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         MTGOViewHolder(View itemView) {
             super(itemView);
 
-            mTypeTextView = itemView.findViewById(R.id.tv_region_type);
-            mTitleTextView = itemView.findViewById(R.id.tv_region_title);
+            mTypeTextView = itemView.findViewById(R.id.tv_mtgo_type);
+            mTitleTextView = itemView.findViewById(R.id.tv_mtgo_title);
         }
 
         void populate(MTGObject MTGObject) {
@@ -124,5 +124,11 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void addMTGObjectList(ArrayList<MTGObject> mtgObjectList) {
         mMTGObjectList.addAll(mtgObjectList);
         notifyDataSetChanged();
+    }
+
+    public void clear() {
+        mRegionList.clear();
+        mMTGObjectList.clear();
+        this.notifyDataSetChanged();
     }
 }

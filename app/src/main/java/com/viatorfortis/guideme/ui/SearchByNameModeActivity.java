@@ -57,6 +57,8 @@ public class SearchByNameModeActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mSearchResultAdapter.clear();
+
                 SearchRegionsTask searchRegionsTask = new SearchRegionsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
                 String [] searchParameters = {"any",
                         SearchByNameModeActivity.this.searchTextView.getText().toString()};
