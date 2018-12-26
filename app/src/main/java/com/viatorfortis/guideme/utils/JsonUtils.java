@@ -3,6 +3,7 @@ package com.viatorfortis.guideme.utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.viatorfortis.guideme.model.MTGObject;
 import com.viatorfortis.guideme.model.Region;
 
 import java.lang.reflect.Type;
@@ -15,6 +16,12 @@ public final class JsonUtils {
         Type listType = new TypeToken<ArrayList<Region>>(){}.getType();
 
         return new Gson().fromJson(jsonArray, listType);
+    }
 
+    public static List<MTGObject> parseMTGObjectListJson(String jsonArray)
+            throws JsonSyntaxException {
+        Type listType = new TypeToken<ArrayList<MTGObject>>(){}.getType();
+
+        return new Gson().fromJson(jsonArray, listType);
     }
 }

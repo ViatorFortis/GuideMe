@@ -8,7 +8,7 @@ public class Reviews {
 
     @SerializedName("rating_average")
     @Expose
-    private Integer ratingAverage;
+    private float ratingAverage;
     @SerializedName("ratings_count")
     @Expose
     private Integer ratingsCount;
@@ -16,11 +16,11 @@ public class Reviews {
     @Expose
     private Integer reviewsCount;
 
-    public Integer getRatingAverage() {
+    public float getRatingAverage() {
         return ratingAverage;
     }
 
-    public void setRatingAverage(Integer ratingAverage) {
+    public void setRatingAverage(float ratingAverage) {
         this.ratingAverage = ratingAverage;
     }
 

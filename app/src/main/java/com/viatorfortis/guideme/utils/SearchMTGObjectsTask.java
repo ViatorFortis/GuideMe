@@ -5,15 +5,25 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.viatorfortis.guideme.model.MTGObject;
+import com.viatorfortis.guideme.rv.SearchResultAdapter;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchMTGObjectsTask extends AsyncTask <String, Void, String> {
 
     private final String Tag = this.getClass().getSimpleName();
     private Context context;
 
-    public SearchMTGObjectsTask(Context context) {
+    private SearchResultAdapter mSearchResultAdapter;
+
+    public SearchMTGObjectsTask(Context context, SearchResultAdapter searchResultAdapter) {
+        super();
+
         this.context = context;
+        this.mSearchResultAdapter = searchResultAdapter;
     }
 
     @Override
@@ -31,6 +41,9 @@ public class SearchMTGObjectsTask extends AsyncTask <String, Void, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
 
-        Toast.makeText(context, "getMuseumAndTourListBySearchJson retuurns " + result, Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "getMuseumAndTourListBySearchJson retuurns " + result, Toast.LENGTH_LONG).show();
+        List<MTGObject> mtgObjectList = JsonUtils.parseMTGObjectListJson(result);
+
+        mSearchResultAdapter.addMTGObjectList( (ArrayList<MTGObject>) mtgObjectList);
     }
 }

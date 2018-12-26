@@ -47,7 +47,7 @@ public class SearchRegionsTask extends AsyncTask <String, Void, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
 
-        Toast.makeText(context, "getRegionListJson() returns " + result, Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "getRegionListJson() returns " + result, Toast.LENGTH_LONG).show();
         List<Region> regionList = JsonUtils.parseRegionListJson(result);
 
 
@@ -55,7 +55,7 @@ public class SearchRegionsTask extends AsyncTask <String, Void, String> {
 
         String searchParameters[] = {mLanguages, mQuery};
 
-        SearchMTGObjectsTask searchMTGObjectsTask = new SearchMTGObjectsTask(context);
+        SearchMTGObjectsTask searchMTGObjectsTask = new SearchMTGObjectsTask(context, mSearchResultAdapter);
         searchMTGObjectsTask.execute(searchParameters);
     }
 }
