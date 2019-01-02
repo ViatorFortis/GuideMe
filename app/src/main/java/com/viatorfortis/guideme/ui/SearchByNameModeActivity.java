@@ -1,14 +1,18 @@
 package com.viatorfortis.guideme.ui;
 
+import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.viatorfortis.guideme.R;
 import com.viatorfortis.guideme.model.MTGObject;
@@ -20,13 +24,11 @@ import java.util.ArrayList;
 
 public class SearchByNameModeActivity extends AppCompatActivity {
 
-    private Button searchButton;
-
     private EditText mSearchEditText;
 
     private SearchResultAdapter mSearchResultAdapter;
 
-
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,22 +53,39 @@ public class SearchByNameModeActivity extends AppCompatActivity {
         recyclerView.setAdapter(mSearchResultAdapter);
 
         mSearchEditText = findViewById(R.id.tv_searchField);
-
-        searchButton = findViewById(R.id.btn_search);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        mSearchEditText.addTextChangedListener(new SearchTextWatcher(mSearchEditText) );
+        mSearchEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                mSearchResultAdapter.clear();
-
-                SearchRegionsTask searchRegionsTask = new SearchRegionsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
-                String [] searchParameters = {"any",
-                        SearchByNameModeActivity.this.mSearchEditText.getText().toString()};
-                searchRegionsTask.execute(searchParameters);
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= v.getRight() - ((EditText) v).getCompoundDrawables()[2].getBounds().width() ) {
+                        ((EditText) v).setText("");
+                        return true;
+                    }
+                }
+                return false;
             }
         });
-
+        mSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    startSearch();
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
     }
 
+    private void startSearch() {
+        mSearchResultAdapter.clear();
 
+        SearchRegionsTask searchRegionsTask = new SearchRegionsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
+        String [] searchParameters = {"any",
+                SearchByNameModeActivity.this.mSearchEditText.getText().toString()};
+        searchRegionsTask.execute(searchParameters);
+    }
 
 }
