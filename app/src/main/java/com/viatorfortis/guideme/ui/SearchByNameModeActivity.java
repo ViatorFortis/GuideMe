@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import com.viatorfortis.guideme.R;
 import com.viatorfortis.guideme.model.MTGObject;
@@ -17,13 +17,12 @@ import com.viatorfortis.guideme.utils.SearchRegionsTask;
 import com.viatorfortis.guideme.model.Region;
 
 import java.util.ArrayList;
-import com.viatorfortis.guideme.model.Region;
 
 public class SearchByNameModeActivity extends AppCompatActivity {
 
     private Button searchButton;
 
-    private TextView searchTextView;
+    private EditText mSearchEditText;
 
     private SearchResultAdapter mSearchResultAdapter;
 
@@ -51,7 +50,7 @@ public class SearchByNameModeActivity extends AppCompatActivity {
         mSearchResultAdapter = new SearchResultAdapter(regionList, mtgObjectList);
         recyclerView.setAdapter(mSearchResultAdapter);
 
-        searchTextView = findViewById(R.id.tv_searchField);
+        mSearchEditText = findViewById(R.id.tv_searchField);
 
         searchButton = findViewById(R.id.btn_search);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +60,7 @@ public class SearchByNameModeActivity extends AppCompatActivity {
 
                 SearchRegionsTask searchRegionsTask = new SearchRegionsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
                 String [] searchParameters = {"any",
-                        SearchByNameModeActivity.this.searchTextView.getText().toString()};
+                        SearchByNameModeActivity.this.mSearchEditText.getText().toString()};
                 searchRegionsTask.execute(searchParameters);
             }
         });
