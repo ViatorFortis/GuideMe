@@ -21,4 +21,9 @@
     <string name="http_get_method">GET</string>
     <string name="search_edit_text_hint">I\'m looking for...</string>
     <string name="search_button_text">Search</string>
+
+    <string name="sort_by_name_asc_action">Sort by name asc</string>
+    <string name="sort_by_name_desc_action">Sort by name desc</string>
+    <string name="sort_by_rating_asc_action">Sort by rating asc</string>
+    <string name="sort_by_rating_desc_action">Sort by rating desc</string>
 </resources>
