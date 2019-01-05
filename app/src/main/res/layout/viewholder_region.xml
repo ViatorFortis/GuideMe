@@ -16,6 +16,7 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
 
+        android:padding="8dp"
         android:textSize="16sp"
         tools:text="Region type" />
 
@@ -29,6 +30,7 @@
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toEndOf="@+id/tv_region_type"
 
+        android:padding="8dp"
         android:textSize="16sp"
         tools:text="Region title" />
 
