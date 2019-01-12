@@ -37,7 +37,7 @@ public class IziTravelApi {
     private static final String CITIES_SEGMENT = "cities";
 
     public enum RegionType {
-        Country, City
+        COUNTRY, CITY
     }
 
     public enum SortingType {
@@ -78,15 +78,16 @@ public class IziTravelApi {
         return url;
     }
 
-    public static URL buildGetMuseumAndTourByRegionUrl(Context context, RegionType regionType, String regionUuid, String languages) {
+    public static URL buildGetMuseumAndTourByRegionUrl(Context context, String regionType, String regionUuid, String languages, String sortingType, String sortingOrder) {
         Uri uri = Uri.parse(BASE_URL).buildUpon()
-                .appendEncodedPath(regionType == RegionType.Country ? COUNTRIES_SEGMENT : CITIES_SEGMENT)
+                .appendEncodedPath(regionType.equals(RegionType.COUNTRY.toString().toLowerCase() ) ? COUNTRIES_SEGMENT : CITIES_SEGMENT)
                 .appendEncodedPath(regionUuid)
                 .appendEncodedPath(CHILDREN_SEGMENT)
                 .appendQueryParameter(API_VERSION_PARAMETER, context.getString(R.string.api_version) )
                 .appendQueryParameter(LANGUAGES_PARAMETER, languages)
                 .appendQueryParameter(EXCEPT_PARAMETER, context.getString(R.string.mtgo_publisher))
                 .appendQueryParameter(LIMIT_PARAMETER, context.getString(R.string.mtgo_search_result_limit) )
+                .appendQueryParameter(SORTING_PARAMETER, sortingType + ":" + sortingOrder)
                 .build();
 
         URL url = null;
@@ -151,9 +152,9 @@ public class IziTravelApi {
         return getHttpResponse(context, url);
     }
 
-    public static String getMuseumAndTourListByRegionJson(Context context, RegionType regionType, String regionUuid, String languages)
+    public static String getMuseumAndTourListByRegionJson(Context context, String regionType, String regionUuid, String languages, String sortingType, String sortingOrder)
             throws IOException {
-        URL url = buildGetMuseumAndTourByRegionUrl(context, regionType, regionUuid, languages);
+        URL url = buildGetMuseumAndTourByRegionUrl(context, regionType, regionUuid, languages, sortingType, sortingOrder);
         return getHttpResponse(context, url);
     }
 

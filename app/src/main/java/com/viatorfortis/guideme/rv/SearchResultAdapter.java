@@ -13,7 +13,6 @@ import com.viatorfortis.guideme.model.MTGObject;
 import com.viatorfortis.guideme.model.Region;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -23,9 +22,16 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final ArrayList<Region> mRegionList;
     private final ArrayList<MTGObject> mMTGObjectList;
 
-    public SearchResultAdapter(ArrayList<Region> regionList, ArrayList<MTGObject> MTGObjectList) {
+    private final GridItemClickListener mGridItemClickListener;
+
+    public interface GridItemClickListener {
+        void onGridItemClick(Object object);
+    }
+
+    public SearchResultAdapter(ArrayList<Region> regionList, ArrayList<MTGObject> MTGObjectList, GridItemClickListener gridItemClickListener) {
         mRegionList = regionList;
         mMTGObjectList = MTGObjectList;
+        mGridItemClickListener = gridItemClickListener;
     }
 
     @Override
@@ -80,6 +86,8 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             mTypeTextView = itemView.findViewById(R.id.tv_region_type);
             mTitleTextView = itemView.findViewById(R.id.tv_region_title);
+
+            itemView.setOnClickListener(this);
         }
 
         void populate(Region region) {
@@ -89,7 +97,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public void onClick(View v) {
-
+            mGridItemClickListener.onGridItemClick(mRegionList.get(getAdapterPosition() ) );
         }
     }
 

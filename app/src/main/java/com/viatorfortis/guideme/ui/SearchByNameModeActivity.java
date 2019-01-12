@@ -20,12 +20,14 @@ import com.viatorfortis.guideme.R;
 import com.viatorfortis.guideme.model.MTGObject;
 import com.viatorfortis.guideme.rv.SearchResultAdapter;
 import com.viatorfortis.guideme.utils.IziTravelApi;
+import com.viatorfortis.guideme.utils.SearchMTGObjectsByRegion;
 import com.viatorfortis.guideme.utils.SearchRegionsTask;
 import com.viatorfortis.guideme.model.Region;
 
 import java.util.ArrayList;
 
-public class SearchByNameModeActivity extends AppCompatActivity {
+public class SearchByNameModeActivity extends AppCompatActivity
+        implements SearchResultAdapter.GridItemClickListener {
 
     private EditText mSearchEditText;
 
@@ -56,7 +58,7 @@ public class SearchByNameModeActivity extends AppCompatActivity {
 
         ArrayList<Region> regionList = new ArrayList<Region>();
         ArrayList<MTGObject> mtgObjectList = new ArrayList<MTGObject>();
-        mSearchResultAdapter = new SearchResultAdapter(regionList, mtgObjectList);
+        mSearchResultAdapter = new SearchResultAdapter(regionList, mtgObjectList, this);
         recyclerView.setAdapter(mSearchResultAdapter);
 
         mSearchEditText = findViewById(R.id.tv_searchField);
@@ -139,4 +141,23 @@ public class SearchByNameModeActivity extends AppCompatActivity {
         searchRegionsTask.execute(searchParameters);
     }
 
+    @Override
+    public void onGridItemClick(Object object) {
+        mSearchResultAdapter.clear();
+
+        if (object instanceof Region) {
+            SearchMTGObjectsByRegion searchMTGObjectsByRegion = new SearchMTGObjectsByRegion(SearchByNameModeActivity.this, mSearchResultAdapter);
+
+            Region region = (Region) object;
+
+            String[] searchParameters = {region.getType(),
+                    region.getUuid(),
+                    "any",
+                    mSortingType.toString().toLowerCase(),
+                    mSortingOrder.toString().toLowerCase()
+            };
+
+            searchMTGObjectsByRegion.execute(searchParameters);
+        }
+    }
 }
