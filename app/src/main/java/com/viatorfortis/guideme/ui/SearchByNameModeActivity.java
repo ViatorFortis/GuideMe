@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.viatorfortis.guideme.R;
 import com.viatorfortis.guideme.model.MTGObject;
 import com.viatorfortis.guideme.rv.SearchResultAdapter;
+import com.viatorfortis.guideme.utils.IziTravelApi;
 import com.viatorfortis.guideme.utils.SearchRegionsTask;
 import com.viatorfortis.guideme.model.Region;
 
@@ -29,6 +30,10 @@ public class SearchByNameModeActivity extends AppCompatActivity {
     private EditText mSearchEditText;
 
     private SearchResultAdapter mSearchResultAdapter;
+
+    private IziTravelApi.SortingType mSortingType;
+
+    private IziTravelApi.SortingOrder mSortingOrder;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -85,6 +90,8 @@ public class SearchByNameModeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.sort_types_menu, menu);
         menu.findItem(R.id.item_sort_by_name_asc).setChecked(true);
+        mSortingType = IziTravelApi.SortingType.TITLE;
+        mSortingOrder = IziTravelApi.SortingOrder.ASC;
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -92,6 +99,30 @@ public class SearchByNameModeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         item.setChecked(true);
+
+        switch (item.getItemId()) {
+            case R.id.item_sort_by_name_asc:
+                mSortingType = IziTravelApi.SortingType.TITLE;
+                mSortingOrder = IziTravelApi.SortingOrder.ASC;
+                break;
+
+            case R.id.item_sort_by_name_desc:
+                mSortingType = IziTravelApi.SortingType.TITLE;
+                mSortingOrder = IziTravelApi.SortingOrder.DESC;
+                break;
+
+            case R.id.item_sort_by_rating_asc:
+                mSortingType = IziTravelApi.SortingType.RATING;
+                mSortingOrder = IziTravelApi.SortingOrder.ASC;
+                break;
+
+            case R.id.item_sort_by_rating_desc:
+                mSortingType = IziTravelApi.SortingType.RATING;
+                mSortingOrder = IziTravelApi.SortingOrder.DESC;
+                break;
+        }
+
+        startSearch();
 
         return super.onOptionsItemSelected(item);
     }
@@ -101,7 +132,10 @@ public class SearchByNameModeActivity extends AppCompatActivity {
 
         SearchRegionsTask searchRegionsTask = new SearchRegionsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
         String [] searchParameters = {"any",
-                SearchByNameModeActivity.this.mSearchEditText.getText().toString()};
+                SearchByNameModeActivity.this.mSearchEditText.getText().toString(),
+                mSortingType.toString().toLowerCase(),
+                mSortingOrder.toString().toLowerCase()
+        };
         searchRegionsTask.execute(searchParameters);
     }
 

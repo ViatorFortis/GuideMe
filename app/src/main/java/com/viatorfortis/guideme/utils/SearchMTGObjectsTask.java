@@ -29,7 +29,7 @@ public class SearchMTGObjectsTask extends AsyncTask <String, Void, String> {
     @Override
     protected String doInBackground(String... searchParameters) {
         try {
-            return IziTravelApi.getMuseumAndTourListBySearchJson(context, searchParameters[0], searchParameters[1]);
+            return IziTravelApi.getMuseumAndTourListBySearchJson(context, searchParameters[0], searchParameters[1], searchParameters[2], searchParameters[3]);
         } catch (IOException e) {
             Log.e(Tag, e.getMessage() );
         }
@@ -41,7 +41,7 @@ public class SearchMTGObjectsTask extends AsyncTask <String, Void, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
 
-        //Toast.makeText(context, "getMuseumAndTourListBySearchJson retuurns " + result, Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "getMuseumAndTourListBySearchJson returns " + result, Toast.LENGTH_LONG).show();
         List<MTGObject> mtgObjectList = JsonUtils.parseMTGObjectListJson(result);
 
         mSearchResultAdapter.addMTGObjectList( (ArrayList<MTGObject>) mtgObjectList);

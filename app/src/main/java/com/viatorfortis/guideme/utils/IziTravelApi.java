@@ -40,9 +40,19 @@ public class IziTravelApi {
         Country, City
     }
 
+    public enum SortingType {
+        TITLE, RATING
+    }
+
+    public enum SortingOrder {
+        ASC, DESC
+    }
+
     private static final String CHILDREN_SEGMENT = "children";
 
     private static final String EXCEPT_PARAMETER = "except";
+
+    private static final String SORTING_PARAMETER = "sort_by";
 
     private static final String API_KEY_HEADER = "X-IZI-API-KEY";
 
@@ -90,7 +100,7 @@ public class IziTravelApi {
         return url;
     }
 
-    private static URL buildSearchMuseumAndTourUrl(Context context, String languages, String query) {
+    private static URL buildSearchMuseumAndTourUrl(Context context, String languages, String query, String sortingType, String sortingOrder) {
 
         Uri uri = Uri.parse(BASE_URL).buildUpon()
                 .appendEncodedPath(MTGO_SEARCH_ENDPOINT)
@@ -99,6 +109,7 @@ public class IziTravelApi {
                 .appendQueryParameter(MTGO_TYPE_PARAMETER, context.getString(R.string.mtgo_museum_type) + "," + context.getString(R.string.mtgo_tour_type) )
                 .appendQueryParameter(QUERY_PARAMETER, query)
                 .appendQueryParameter(LIMIT_PARAMETER, context.getString(R.string.mtgo_search_result_limit) )
+                .appendQueryParameter(SORTING_PARAMETER, sortingType + ":" + sortingOrder)
                 .build();
 
         URL url = null;
@@ -146,9 +157,9 @@ public class IziTravelApi {
         return getHttpResponse(context, url);
     }
 
-    public static String getMuseumAndTourListBySearchJson(Context context, String languages, String query)
+    public static String getMuseumAndTourListBySearchJson(Context context, String languages, String query, String sortingType, String sortingOrder)
             throws IOException {
-        URL url = buildSearchMuseumAndTourUrl(context, languages, query);
+        URL url = buildSearchMuseumAndTourUrl(context, languages, query, sortingType, sortingOrder);
         return getHttpResponse(context, url);
     }
 

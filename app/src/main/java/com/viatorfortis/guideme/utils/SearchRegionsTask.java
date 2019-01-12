@@ -18,6 +18,8 @@ public class SearchRegionsTask extends AsyncTask <String, Void, String> {
     private Context context;
     private String mLanguages;
     private String mQuery;
+    private String mSortingType;
+    private String mSortingOrder;
 
     private SearchResultAdapter mSearchResultAdapter;
 
@@ -33,9 +35,11 @@ public class SearchRegionsTask extends AsyncTask <String, Void, String> {
 
         mLanguages = searchParameters[0];
         mQuery = searchParameters[1];
+        mSortingType = searchParameters[2];
+        mSortingOrder = searchParameters[3];
 
         try {
-            return IziTravelApi.getRegionListJson(context, searchParameters[0], searchParameters[1]);
+            return IziTravelApi.getRegionListJson(context, mLanguages, mQuery);
         } catch (IOException e) {
             Log.e(Tag, e.getMessage() );
         }
@@ -53,7 +57,7 @@ public class SearchRegionsTask extends AsyncTask <String, Void, String> {
 
         mSearchResultAdapter.addRegionList((ArrayList<Region>) regionList);
 
-        String searchParameters[] = {mLanguages, mQuery};
+        String searchParameters[] = {mLanguages, mQuery, mSortingType, mSortingOrder};
 
         SearchMTGObjectsTask searchMTGObjectsTask = new SearchMTGObjectsTask(context, mSearchResultAdapter);
         searchMTGObjectsTask.execute(searchParameters);
