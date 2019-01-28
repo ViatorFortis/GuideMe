@@ -21,6 +21,7 @@ import com.viatorfortis.guideme.model.MTGObject;
 import com.viatorfortis.guideme.rv.SearchResultAdapter;
 import com.viatorfortis.guideme.utils.IziTravelApi;
 import com.viatorfortis.guideme.utils.SearchMTGObjectsByRegion;
+import com.viatorfortis.guideme.utils.SearchMTGObjectsTask;
 import com.viatorfortis.guideme.utils.SearchRegionsTask;
 import com.viatorfortis.guideme.model.Region;
 
@@ -134,13 +135,20 @@ public class SearchByNameModeActivity extends AppCompatActivity
     private void startSearch() {
         mSearchResultAdapter.clear();
 
-        SearchRegionsTask searchRegionsTask = new SearchRegionsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
-        String [] searchParameters = {"any",
+        SearchMTGObjectsTask searchMTGObjectsTask = new SearchMTGObjectsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
+        String [] searchParameters = {"en",
                 SearchByNameModeActivity.this.mSearchEditText.getText().toString(),
                 mSortingType.toString().toLowerCase(),
                 mSortingOrder.toString().toLowerCase()
         };
-        searchRegionsTask.execute(searchParameters);
+        searchMTGObjectsTask.execute(searchParameters);
+//        SearchRegionsTask searchRegionsTask = new SearchRegionsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
+//        String [] searchParameters = {"en",
+//                SearchByNameModeActivity.this.mSearchEditText.getText().toString(),
+//                mSortingType.toString().toLowerCase(),
+//                mSortingOrder.toString().toLowerCase()
+//        };
+//        searchRegionsTask.execute(searchParameters);
     }
 
     @Override

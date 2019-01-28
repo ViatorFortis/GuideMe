@@ -13,6 +13,8 @@
     <string name="mtgo_region_type">country,city</string>
     <string name="mtgo_search_result_limit">500</string>
 
+    <string name="mtgo_country_type">country</string>
+    <string name="mtgo_city_type">city</string>
     <string name="mtgo_museum_type">museum</string>
     <string name="mtgo_tour_type">tour</string>
 
