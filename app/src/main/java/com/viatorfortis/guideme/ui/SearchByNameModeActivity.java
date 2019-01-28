@@ -79,7 +79,9 @@ public class SearchByNameModeActivity extends AppCompatActivity
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    v.clearFocus();
                     startSearch();
+
                     return true;
                 } else {
                     return false;
