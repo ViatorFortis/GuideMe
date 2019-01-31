@@ -1,9 +1,12 @@
 package com.viatorfortis.guideme.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Location {
+public class Location implements Parcelable {
 
     @SerializedName("altitude")
     @Expose
@@ -61,4 +64,49 @@ public class Location {
         this.countryUuid = countryUuid;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (altitude == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeInt(altitude);
+        }
+
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+        dest.writeString(countryCode);
+        dest.writeString(countryUuid);
+    }
+
+    private Location (Parcel in) {
+        if (in.readByte() == 0) {
+            altitude = null;
+        } else {
+            altitude = in.readInt();
+        }
+
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+        countryCode = in.readString();
+        countryUuid = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Location> CREATOR = new Creator<Location>(){
+
+        @Override
+        public Location createFromParcel(Parcel source) {
+            return new Location(source);
+        }
+
+        @Override
+        public Location[] newArray(int size) {
+            return new Location[size];
+        }
+    };
 }

@@ -1,11 +1,14 @@
 package com.viatorfortis.guideme.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Region {
+public class Region implements Parcelable {
 
     @SerializedName("uuid")
     @Expose
@@ -140,4 +143,51 @@ public class Region {
         this.location = location;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uuid);
+        dest.writeString(type);
+        dest.writeStringList(languages);
+        dest.writeString(status);
+        dest.writeInt(childrenCount);
+        dest.writeParcelable(map, flags);
+        dest.writeString(hash);
+        dest.writeByte( (byte) (visible ? 1 : 0) );
+        dest.writeString(title);
+        dest.writeString(summary);
+        dest.writeString(language);
+        dest.writeParcelable(location, flags);
+    }
+
+    private Region(Parcel in) {
+        uuid = in.readString();
+        type = in.readString();
+        in.readStringList(languages);
+        status = in.readString();
+        childrenCount = in.readInt();
+        map = in.readParcelable(Map.class.getClassLoader() );
+        hash = in.readString();
+        visible = in.readByte() != 0;
+        title = in.readString();
+        summary = in.readString();
+        language = in.readString();
+        location = in.readParcelable(Location.class.getClassLoader() );
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Region>CREATOR = new Creator<Region>() {
+        @Override
+        public Region createFromParcel(Parcel source) {
+            return new Region(source);
+        }
+
+        @Override
+        public Region[] newArray(int size) {
+            return new Region[size];
+        }
+    };
 }
