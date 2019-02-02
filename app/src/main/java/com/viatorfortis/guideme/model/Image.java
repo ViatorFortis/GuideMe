@@ -1,10 +1,13 @@
 
 package com.viatorfortis.guideme.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Image {
+public class Image implements Parcelable {
 
     @SerializedName("uuid")
     @Expose
@@ -62,4 +65,61 @@ public class Image {
         this.size = size;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uuid);
+        dest.writeString(type);
+
+        if (order == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeInt(order);
+        }
+
+        dest.writeString(hash);
+
+        if (size == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeInt(size);
+        }
+    }
+
+    private Image (Parcel in) {
+        uuid = in.readString();
+        type = in.readString();
+
+        if (in.readByte() == 0) {
+            order = null;
+        } else {
+            order = in.readInt();
+        }
+
+        hash = in.readString();
+
+        if (in.readByte() == 0) {
+            size = null;
+        } else {
+            size = in.readInt();
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Image> CREATOR = new Creator<Image>() {
+        @Override
+        public Image createFromParcel(Parcel in) {
+            return new Image(in);
+        }
+
+        @Override
+        public Image[] newArray(int size) {
+            return new Image[size];
+        }
+    };
 }

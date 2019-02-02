@@ -1,10 +1,13 @@
 
 package com.viatorfortis.guideme.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ContentProvider {
+public class ContentProvider implements Parcelable {
 
     @SerializedName("uuid")
     @Expose
@@ -40,4 +43,33 @@ public class ContentProvider {
         this.copyright = copyright;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uuid);
+        dest.writeString(name);
+        dest.writeString(copyright);
+    }
+
+    private ContentProvider(Parcel in) {
+        uuid = in.readString();
+        name = in.readString();
+        copyright = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<ContentProvider> CREATOR = new Creator<ContentProvider>() {
+        @Override
+        public ContentProvider createFromParcel(Parcel in) {
+            return new ContentProvider(in);
+        }
+
+        @Override
+        public ContentProvider[] newArray(int size) {
+            return new ContentProvider[size];
+        }
+    };
 }

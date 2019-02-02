@@ -1,11 +1,16 @@
 
 package com.viatorfortis.guideme.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
+import java.util.UUID;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MTGObject {
+public class MTGObject implements Parcelable{
 
     @SerializedName("uuid")
     @Expose
@@ -217,4 +222,102 @@ public class MTGObject {
         this.title = title;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uuid);
+        dest.writeString(status);
+        dest.writeString(type);
+        dest.writeString(category);
+
+        if (duration == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeInt(duration);
+        }
+
+        if (distance == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeInt(distance);
+        }
+
+        dest.writeString(placement);
+        dest.writeStringList(languages);
+        dest.writeParcelable(map, flags);
+        dest.writeString(hash);
+
+        if (childrenCount == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeInt(childrenCount);
+        }
+
+        dest.writeString(route);
+        dest.writeParcelable(contentProvider, flags);
+        dest.writeParcelable(reviews, flags);
+        dest.writeTypedList(images);
+        dest.writeParcelable(location, flags);
+        dest.writeString(language);
+        dest.writeString(summary);
+        dest.writeString(title);
+    }
+
+    private MTGObject(Parcel in) {
+        uuid = in.readString();
+        status = in.readString();
+        type = in.readString();
+        category = in.readString();
+
+        if (in.readByte() == 0) {
+            duration = null;
+        } else {
+            duration = in.readInt();
+        }
+
+        if (in.readByte() == 0) {
+            distance = null;
+        } else {
+            distance = in.readInt();
+        }
+
+        placement = in.readString();
+        in.readStringList(languages);
+        map = in.readParcelable(Map.class.getClassLoader() );
+        hash = in.readString();
+
+        if (in.readByte() == 0) {
+            childrenCount = null;
+        } else {
+            childrenCount = in.readInt();
+        }
+
+        route = in.readString();
+        contentProvider = in.readParcelable(ContentProvider.class.getClassLoader() );
+        reviews = in.readParcelable(Reviews.class.getClassLoader() );
+        in.readTypedList(images, Image.CREATOR);
+        location = in.readParcelable(Location.class.getClassLoader() );
+        language = in.readString();
+        summary = in.readString();
+        title = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator<MTGObject> CREATOR = new Parcelable.Creator<MTGObject>() {
+        @Override
+        public MTGObject createFromParcel(Parcel parcel) {
+            return new MTGObject(parcel);
+        }
+
+        @Override
+        public MTGObject[] newArray(int size) {
+            return new MTGObject[size];
+        }
+    };
 }
