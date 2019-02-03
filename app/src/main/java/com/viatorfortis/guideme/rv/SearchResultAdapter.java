@@ -111,6 +111,8 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             mTypeTextView = itemView.findViewById(R.id.tv_mtgo_type);
             mTitleTextView = itemView.findViewById(R.id.tv_mtgo_title);
+
+            itemView.setOnClickListener(this);
         }
 
         void populate(MTGObject MTGObject) {
@@ -120,7 +122,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public void onClick(View v) {
-
+            mGridItemClickListener.onGridItemClick(mMTGObjectList.get(getAdapterPosition() - mRegionList.size() ) );
         }
     }
 
@@ -138,5 +140,13 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mRegionList.clear();
         mMTGObjectList.clear();
         this.notifyDataSetChanged();
+    }
+
+    public ArrayList<Region> getRegionList() {
+        return mRegionList;
+    }
+
+    public ArrayList<MTGObject> getMTGObjectList() {
+        return mMTGObjectList;
     }
 }

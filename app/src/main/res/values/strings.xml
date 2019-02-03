@@ -28,4 +28,5 @@
     <string name="sort_by_name_desc_action">Sort by name desc</string>
     <string name="sort_by_rating_asc_action">Sort by rating asc</string>
     <string name="sort_by_rating_desc_action">Sort by rating desc</string>
+    <string name="mtgobject_parcel_key">MTGObjectParcel</string>
 </resources>

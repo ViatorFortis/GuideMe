@@ -18,11 +18,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.SearchByNameModeActivity"
+        <activity
+            android:name=".ui.SearchByNameModeActivity"
             android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.MTGObjectActivity"
+            android:parentActivityName=".ui.SearchByNameModeActivity"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.SearchByNameModeActivity" />
         </activity>
     </application>
 

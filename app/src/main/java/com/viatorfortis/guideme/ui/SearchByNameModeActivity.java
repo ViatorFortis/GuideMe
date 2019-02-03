@@ -1,12 +1,15 @@
 package com.viatorfortis.guideme.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,8 +60,23 @@ public class SearchByNameModeActivity extends AppCompatActivity
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        ArrayList<Region> regionList = new ArrayList<Region>();
-        ArrayList<MTGObject> mtgObjectList = new ArrayList<MTGObject>();
+
+        ArrayList<Region> regionList;
+
+        if (savedInstanceState == null || !savedInstanceState.containsKey("RegionList") ) {
+            regionList = new ArrayList<Region>();
+        } else {
+            regionList = savedInstanceState.getParcelableArrayList("RegionList");
+        }
+
+        ArrayList<MTGObject> mtgObjectList;
+
+        if (savedInstanceState == null || !savedInstanceState.containsKey("MTGObjectList") ) {
+            mtgObjectList = new ArrayList<MTGObject>();
+        } else {
+            mtgObjectList = savedInstanceState.getParcelableArrayList("MTGObjectList");
+        }
+
         mSearchResultAdapter = new SearchResultAdapter(regionList, mtgObjectList, this);
         recyclerView.setAdapter(mSearchResultAdapter);
 
@@ -89,6 +107,18 @@ public class SearchByNameModeActivity extends AppCompatActivity
                 }
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        try {
+            outState.putParcelableArrayList("RegionList", mSearchResultAdapter.getRegionList() );
+            outState.putParcelableArrayList("MTGObjectList", mSearchResultAdapter.getMTGObjectList() );
+        } catch (Exception e) {
+            Log.d(e.getClass().getName(), e.getMessage() );
+        }
     }
 
     @Override
@@ -135,20 +165,20 @@ public class SearchByNameModeActivity extends AppCompatActivity
     private void startSearch() {
         mSearchResultAdapter.clear();
 
-        SearchMTGObjectsTask searchMTGObjectsTask = new SearchMTGObjectsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
-        String [] searchParameters = {"en",
-                SearchByNameModeActivity.this.mSearchEditText.getText().toString(),
-                mSortingType.toString().toLowerCase(),
-                mSortingOrder.toString().toLowerCase()
-        };
-        searchMTGObjectsTask.execute(searchParameters);
-//        SearchRegionsTask searchRegionsTask = new SearchRegionsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
+//        SearchMTGObjectsTask searchMTGObjectsTask = new SearchMTGObjectsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
 //        String [] searchParameters = {"en",
 //                SearchByNameModeActivity.this.mSearchEditText.getText().toString(),
 //                mSortingType.toString().toLowerCase(),
 //                mSortingOrder.toString().toLowerCase()
 //        };
-//        searchRegionsTask.execute(searchParameters);
+//        searchMTGObjectsTask.execute(searchParameters);
+        SearchRegionsTask searchRegionsTask = new SearchRegionsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
+        String [] searchParameters = {"en",
+                SearchByNameModeActivity.this.mSearchEditText.getText().toString(),
+                mSortingType.toString().toLowerCase(),
+                mSortingOrder.toString().toLowerCase()
+        };
+        searchRegionsTask.execute(searchParameters);
     }
 
     @Override
@@ -162,12 +192,21 @@ public class SearchByNameModeActivity extends AppCompatActivity
 
             String[] searchParameters = {region.getType(),
                     region.getUuid(),
-                    "any",
+                    "en",
                     mSortingType.toString().toLowerCase(),
                     mSortingOrder.toString().toLowerCase()
             };
 
             searchMTGObjectsByRegion.execute(searchParameters);
+        }
+
+        if (object instanceof MTGObject) {
+            MTGObject mtgObject = (MTGObject) object;
+
+            Intent intent = new Intent(this, MTGObjectActivity.class);
+            intent.putExtra(getString(R.string.mtgobject_parcel_key), mtgObject);
+
+            startActivity(intent);
         }
     }
 }
