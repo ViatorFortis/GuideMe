@@ -4,8 +4,8 @@ package com.viatorfortis.guideme.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -35,7 +35,7 @@ public class MTGObject implements Parcelable{
     private String placement;
     @SerializedName("languages")
     @Expose
-    private List<String> languages = null;
+    private List<String> languages;
     @SerializedName("map")
     @Expose
     private Map map;
@@ -56,7 +56,7 @@ public class MTGObject implements Parcelable{
     private Reviews reviews;
     @SerializedName("images")
     @Expose
-    private List<Image> images = null;
+    private List<Image> images;
     @SerializedName("location")
     @Expose
     private Location location;
@@ -244,7 +244,14 @@ public class MTGObject implements Parcelable{
         }
 
         dest.writeString(placement);
-        dest.writeStringList(languages);
+
+        if (languages == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeStringList(languages);
+        }
+
         dest.writeParcelable(map, flags);
         dest.writeString(hash);
 
@@ -258,7 +265,14 @@ public class MTGObject implements Parcelable{
         dest.writeString(route);
         dest.writeParcelable(contentProvider, flags);
         dest.writeParcelable(reviews, flags);
-        dest.writeTypedList(images);
+
+        if (images == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeTypedList(images);
+        }
+
         dest.writeParcelable(location, flags);
         dest.writeString(language);
         dest.writeString(summary);
@@ -284,7 +298,14 @@ public class MTGObject implements Parcelable{
         }
 
         placement = in.readString();
-        in.readStringList(languages);
+
+        if (in.readByte() == 0) {
+            languages = null;
+        } else {
+            languages = new ArrayList<String>();
+            in.readStringList(languages);
+        }
+
         map = in.readParcelable(Map.class.getClassLoader() );
         hash = in.readString();
 
@@ -297,7 +318,14 @@ public class MTGObject implements Parcelable{
         route = in.readString();
         contentProvider = in.readParcelable(ContentProvider.class.getClassLoader() );
         reviews = in.readParcelable(Reviews.class.getClassLoader() );
-        in.readTypedList(images, Image.CREATOR);
+
+        if (in.readByte() == 0) {
+            images = null;
+        } else {
+            images = new ArrayList<Image>();
+            in.readTypedList(images, Image.CREATOR);
+        }
+
         location = in.readParcelable(Location.class.getClassLoader() );
         language = in.readString();
         summary = in.readString();
