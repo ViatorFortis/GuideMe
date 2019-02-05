@@ -165,20 +165,13 @@ public class SearchByNameModeActivity extends AppCompatActivity
     private void startSearch() {
         mSearchResultAdapter.clear();
 
-//        SearchMTGObjectsTask searchMTGObjectsTask = new SearchMTGObjectsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
-//        String [] searchParameters = {"en",
-//                SearchByNameModeActivity.this.mSearchEditText.getText().toString(),
-//                mSortingType.toString().toLowerCase(),
-//                mSortingOrder.toString().toLowerCase()
-//        };
-//        searchMTGObjectsTask.execute(searchParameters);
-        SearchRegionsTask searchRegionsTask = new SearchRegionsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
+        SearchMTGObjectsTask searchMTGObjectsTask = new SearchMTGObjectsTask(SearchByNameModeActivity.this, mSearchResultAdapter);
         String [] searchParameters = {"en",
                 SearchByNameModeActivity.this.mSearchEditText.getText().toString(),
                 mSortingType.toString().toLowerCase(),
                 mSortingOrder.toString().toLowerCase()
         };
-        searchRegionsTask.execute(searchParameters);
+        searchMTGObjectsTask.execute(searchParameters);
     }
 
     @Override
