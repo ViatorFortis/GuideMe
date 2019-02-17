@@ -3,6 +3,7 @@ package com.viatorfortis.guideme.ui;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -176,9 +177,9 @@ public class SearchByNameModeActivity extends AppCompatActivity
 
     @Override
     public void onGridItemClick(Object object) {
-        mSearchResultAdapter.clear();
-
         if (object instanceof Region) {
+            mSearchResultAdapter.clear();
+
             SearchMTGObjectsByRegion searchMTGObjectsByRegion = new SearchMTGObjectsByRegion(SearchByNameModeActivity.this, mSearchResultAdapter);
 
             Region region = (Region) object;
