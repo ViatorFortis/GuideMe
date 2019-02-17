@@ -23,6 +23,9 @@ public class Location implements Parcelable {
     @SerializedName("country_uuid")
     @Expose
     private String countryUuid;
+    @SerializedName("city_uuid")
+    @Expose
+    private String cityUuid;
 
     public Integer getAltitude() {
         return altitude;
@@ -64,6 +67,14 @@ public class Location implements Parcelable {
         this.countryUuid = countryUuid;
     }
 
+    public String getCityUuid() {
+        return cityUuid;
+    }
+
+    public void setCityUuid(String cityUuid) {
+        this.cityUuid = cityUuid;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         if (altitude == null) {
@@ -77,6 +88,7 @@ public class Location implements Parcelable {
         dest.writeDouble(longitude);
         dest.writeString(countryCode);
         dest.writeString(countryUuid);
+        dest.writeString(cityUuid);
     }
 
     private Location (Parcel in) {
@@ -90,6 +102,7 @@ public class Location implements Parcelable {
         longitude = in.readDouble();
         countryCode = in.readString();
         countryUuid = in.readString();
+        cityUuid = in.readString();
     }
 
     @Override
