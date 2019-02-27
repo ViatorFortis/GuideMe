@@ -22,6 +22,8 @@ public class IziTravelApi {
 
     private static final String MTGO_SEARCH_ENDPOINT = "mtg/objects/search";
 
+    private static final String MTGO_ENDPOINT = "mtgobjects";
+
     private static final String API_VERSION_PARAMETER = "version";
 
     private static final String LANGUAGES_PARAMETER = "languages";
@@ -164,6 +166,31 @@ public class IziTravelApi {
     public static String getMuseumAndTourListBySearchJson(Context context, String languages, String query, String sortingType, String sortingOrder)
             throws IOException {
         URL url = buildSearchMuseumAndTourUrl(context, languages, query, sortingType, sortingOrder);
+        return getHttpResponse(context, url);
+    }
+
+    private static URL buildLoadFullFormMTGObjectByIdUrl(Context context, String uuid, String languages) {
+        Uri uri = Uri.parse(BASE_URL).buildUpon()
+                .appendEncodedPath(MTGO_ENDPOINT)
+                .appendEncodedPath(uuid)
+                .appendQueryParameter(API_VERSION_PARAMETER, context.getString(R.string.api_version) )
+                .appendQueryParameter(LANGUAGES_PARAMETER, languages)
+                .build();
+
+        URL url = null;
+
+        try {
+            url = new URL(uri.toString() );
+        } catch (MalformedURLException e) {
+            Log.d(tag, e.getMessage() );
+        }
+
+        return url;
+    }
+
+    public static String getFullFormMTGObjectByIdJson(Context context, String uuid, String languages)
+            throws IOException {
+        URL url = buildLoadFullFormMTGObjectByIdUrl(context, uuid, languages);
         return getHttpResponse(context, url);
     }
 
