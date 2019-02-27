@@ -1,10 +1,14 @@
 package com.viatorfortis.guideme.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Publisher {
+public class Publisher implements Parcelable {
 
     @SerializedName("uuid")
     @Expose
@@ -14,7 +18,7 @@ public class Publisher {
     private String type;
     @SerializedName("languages")
     @Expose
-    private List<String> languages = null;
+    private List<String> languages;
     @SerializedName("status")
     @Expose
     private String status;
@@ -32,7 +36,7 @@ public class Publisher {
     private String language;
     @SerializedName("images")
     @Expose
-    private List<Image> images = null;
+    private List<Image> images;
     @SerializedName("content_provider")
     @Expose
     private ContentProvider contentProvider;
@@ -117,4 +121,76 @@ public class Publisher {
         this.contentProvider = contentProvider;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uuid);
+        dest.writeString(type);
+
+        if (languages == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeStringList(languages);
+        }
+
+        dest.writeString(status);
+        dest.writeString(hash);
+        dest.writeString(title);
+        dest.writeString(summary);
+        dest.writeString(language);
+
+        if (images == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeTypedList(images);
+        }
+
+        dest.writeParcelable(contentProvider, flags);
+
+    }
+
+    private Publisher(Parcel in) {
+        uuid = in.readString();
+        type = in.readString();
+
+        if (in.readByte() == 0) {
+            languages = null;
+        } else {
+            languages = new ArrayList<String>();
+            in.readStringList(languages);
+        }
+
+        status = in.readString();
+        hash = in.readString();
+        title = in.readString();
+        summary = in.readString();
+        language = in.readString();
+
+        if (in.readByte() == 0) {
+            images = null;
+        } else {
+            images = new ArrayList<Image>();
+            in.readTypedList(images, Image.CREATOR);
+        }
+
+        in.readParcelable(ContentProvider.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator<Publisher> CREATOR = new Parcelable.Creator<Publisher>() {
+        @Override
+        public Publisher createFromParcel(Parcel parcel) {
+            return new Publisher(parcel);
+        }
+
+        @Override
+        public Publisher[] newArray(int size) {
+            return new Publisher[size];
+        }
+    };
 }

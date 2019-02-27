@@ -1,9 +1,12 @@
 package com.viatorfortis.guideme.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TriggerZone {
+public class TriggerZone implements Parcelable {
 
     @SerializedName("circle_altitude")
     @Expose
@@ -71,5 +74,89 @@ public class TriggerZone {
     public void setPolygonCorners(String polygonCorners) {
         this.polygonCorners = polygonCorners;
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (circleAltitude == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeInt(circleAltitude);
+        }
+
+        dest.writeString(type);
+
+        if (circleLatitude == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeDouble(circleLatitude);
+        }
+
+        if (circleLongitude == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeDouble(circleLongitude);
+        }
+
+        if (circleRadius == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeDouble(circleRadius);
+        }
+
+        dest.writeString(polygonCorners);
+    }
+
+    private TriggerZone(Parcel in) {
+        if (in.readByte() == 0) {
+            circleAltitude = null;
+        } else {
+            circleAltitude = in.readInt();
+        }
+
+        type = in.readString();
+
+        if (in.readByte() == 0) {
+            circleLatitude = null;
+        } else {
+            circleLatitude = in.readDouble();
+        }
+
+        if (in.readByte() == 0) {
+            circleLongitude = null;
+        } else {
+            circleLongitude = in.readDouble();
+        }
+
+        if (in.readByte() == 0) {
+            circleRadius = null;
+        } else {
+            circleRadius = in.readDouble();
+        }
+
+        polygonCorners = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator<TriggerZone> CREATOR = new Parcelable.Creator<TriggerZone>() {
+        @Override
+        public TriggerZone createFromParcel(Parcel parcel) {
+            return new TriggerZone(parcel);
+        }
+
+        @Override
+        public TriggerZone[] newArray(int size) {
+            return new TriggerZone[size];
+        }
+    };
+
+
 
 }
