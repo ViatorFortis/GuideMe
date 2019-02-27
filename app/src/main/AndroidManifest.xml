@@ -20,6 +20,7 @@
         </activity>
         <activity
             android:name=".ui.SearchByNameModeActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
