@@ -28,8 +28,8 @@
         android:textColor="@color/textColorSecondary"
         android:inputType="text"
         android:hint="@string/search_edit_text_hint"
+        android:imeOptions="actionDone"
         android:drawableRight="@drawable/ic_search_black_24dp"
-        android:imeOptions="actionSearch"
         android:drawableEnd="@drawable/ic_search_black_24dp" />
 
     <android.support.v7.widget.RecyclerView

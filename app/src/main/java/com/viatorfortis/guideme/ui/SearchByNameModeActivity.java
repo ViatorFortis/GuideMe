@@ -2,8 +2,6 @@ package com.viatorfortis.guideme.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,7 +24,6 @@ import com.viatorfortis.guideme.rv.SearchResultAdapter;
 import com.viatorfortis.guideme.utils.IziTravelApi;
 import com.viatorfortis.guideme.utils.SearchMTGObjectsByRegion;
 import com.viatorfortis.guideme.utils.SearchMTGObjectsTask;
-import com.viatorfortis.guideme.utils.SearchRegionsTask;
 import com.viatorfortis.guideme.model.Region;
 
 import java.util.ArrayList;
@@ -98,11 +95,11 @@ public class SearchByNameModeActivity extends AppCompatActivity
         mSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    v.clearFocus();
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    //v.clearFocus();
                     startSearch();
 
-                    return true;
+                    return false;
                 } else {
                     return false;
                 }
