@@ -27,12 +27,12 @@
         </activity>
         <activity
             android:name=".ui.MTGObjectActivity"
-            android:parentActivityName=".ui.SearchByNameModeActivity"
-            >
+            android:parentActivityName=".ui.SearchByNameModeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.SearchByNameModeActivity" />
         </activity>
+        <activity android:name=".ui.MTGObjectChildActivity"></activity>
     </application>
 
 </manifest>
