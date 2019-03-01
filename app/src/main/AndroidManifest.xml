@@ -28,12 +28,18 @@
         </activity>
         <activity
             android:name=".ui.MTGObjectActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ui.SearchByNameModeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.SearchByNameModeActivity" />
         </activity>
-        <activity android:name=".ui.MTGObjectChildActivity"></activity>
+        <activity
+            android:name=".ui.MTGObjectChildActivity"
+            android:parentActivityName=".ui.MTGObjectActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MTGObjectActivity" /></activity>
     </application>
 
 </manifest>
