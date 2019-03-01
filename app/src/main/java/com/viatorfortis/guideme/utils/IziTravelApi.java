@@ -38,6 +38,10 @@ public class IziTravelApi {
 
     private static final String CITIES_SEGMENT = "cities";
 
+    private static final String MEDIA_BASE_URL = "https://media.izi.travel";
+
+    private static final String JPEG_EXTENSION = "jpg";
+
     public enum RegionType {
         COUNTRY, CITY
     }
@@ -194,4 +198,15 @@ public class IziTravelApi {
         return getHttpResponse(context, url);
     }
 
+    public static Uri buildStoryImageUri(String contentProviderUuid, String imageUuid, String imageSize) {
+        String imageSegment = String.format("%s_%s.%s",
+                imageUuid,
+                imageSize,
+                JPEG_EXTENSION);
+
+        return Uri.parse(MEDIA_BASE_URL).buildUpon()
+                .appendEncodedPath(contentProviderUuid)
+                .appendEncodedPath(imageSegment)
+                .build();
+    }
 }
