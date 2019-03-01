@@ -238,9 +238,9 @@ public class Child implements Parcelable {
             in.readTypedList(triggerZones, TriggerZone.CREATOR);
         }
 
-        in.readParcelable(ContentProvider.class.getClassLoader());
-        in.readParcelable(Publisher.class.getClassLoader());
-        in.readParcelable(Location.class.getClassLoader());
+        contentProvider = in.readParcelable(ContentProvider.class.getClassLoader());
+        publisher = in.readParcelable(Publisher.class.getClassLoader());
+        location = in.readParcelable(Location.class.getClassLoader());
 
         language = in.readString();
         summary = in.readString();
