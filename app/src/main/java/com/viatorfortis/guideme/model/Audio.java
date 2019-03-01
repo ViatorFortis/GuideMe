@@ -1,9 +1,12 @@
 package com.viatorfortis.guideme.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Audio {
+public class Audio implements Parcelable {
 
     @SerializedName("uuid")
     @Expose
@@ -71,4 +74,75 @@ public class Audio {
     public void setSize(Integer size) {
         this.size = size;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uuid);
+        dest.writeString(type);
+
+        if (duration == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeInt(duration);
+        }
+
+        if (order == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeInt(order);
+        }
+
+        dest.writeString(hash);
+
+        if (size == null) {
+            dest.writeByte( (byte) 0);
+        } else {
+            dest.writeByte( (byte) 1);
+            dest.writeInt(size);
+        }
+    }
+
+    private Audio (Parcel in) {
+        uuid = in.readString();
+        type = in.readString();
+
+        if (in.readByte() == 0) {
+            duration = null;
+        } else {
+            duration = in.readInt();
+        }
+
+        if (in.readByte() == 0) {
+            order = null;
+        } else {
+            order = in.readInt();
+        }
+
+        hash = in.readString();
+
+        if (in.readByte() == 0) {
+            size = null;
+        } else {
+            size = in.readInt();
+        }
+    }
+
+    public static final Creator<Audio> CREATOR = new Creator<Audio>() {
+        @Override
+        public Audio createFromParcel(Parcel in) {
+            return new Audio(in);
+        }
+
+        @Override
+        public Audio[] newArray(int size) {
+            return new Audio[size];
+        }
+    };
 }
