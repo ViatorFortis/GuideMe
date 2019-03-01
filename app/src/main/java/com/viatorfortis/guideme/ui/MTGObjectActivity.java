@@ -41,42 +41,49 @@ public class MTGObjectActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mtgobject);
 
-        MTGObject mtgObject;
-
-        try {
-            mtgObject = getIntent().getParcelableExtra(getString(R.string.mtgobject_parcel_key) );
-        } catch (NullPointerException e) {
-            Toast.makeText(this, "Unable to get MTGObject details", Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
-
         Toolbar appBar = findViewById(R.id.tb_mtgobject);
         setSupportActionBar(appBar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle(mtgObject.getType() );
         }
 
-        TextView titleTextView = findViewById(R.id.tv_title);
-        titleTextView.setText(mtgObject.getTitle() );
+        MTGObject mtgObject;
 
-        LoadFullFormMTGObjectByIdTask loadFullFormMTGObjectByIdTask = new LoadFullFormMTGObjectByIdTask(this);
-        String [] loadParameters = {mtgObject.getUuid(), "en"};
-        loadFullFormMTGObjectByIdTask.execute(loadParameters);
+        if (savedInstanceState == null || !savedInstanceState.containsKey("FullFormMTGObject") ) {
+            try {
+                mtgObject = getIntent().getParcelableExtra(getString(R.string.mtgobject_parcel_key) );
+            } catch (NullPointerException e) {
+                Toast.makeText(this, "Unable to get MTGObject details", Toast.LENGTH_LONG).show();
+                finish();
+                return;
+            }
 
+            LoadFullFormMTGObjectByIdTask loadFullFormMTGObjectByIdTask = new LoadFullFormMTGObjectByIdTask(this);
+            String [] loadParameters = {mtgObject.getUuid(), "en"};
+            loadFullFormMTGObjectByIdTask.execute(loadParameters);
+        } else {
+            mFullFormMTGObject = savedInstanceState.getParcelable("FullFormMTGObject");
+            populateUI();
+            initializeViewPager();
+        }
+    }
 
-//        PagerTabStrip pagerTabStrip = findViewById(R.id.pts_content);
-//        pagerTabStrip.setDrawFullUnderline(true);
-//        pagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.colorPrimaryDark) );
-//        pagerTabStrip.setTextColor(getResources().getColor(R.color.colorPrimaryDark) );
-//        //pagerTabStrip.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark) );
-//
-//        mViewPager = findViewById(R.id.vp_mtgobject_content);
-//        mPagerAdapter = new MTGObjectFragmentPagerAdapter(getSupportFragmentManager() );
-//        mViewPager.setAdapter(mPagerAdapter);
-//        mViewPager.setCurrentItem(1);
+    private void populateUI() {
+        getSupportActionBar().setTitle(mFullFormMTGObject.getType() );
+
+        ((TextView) findViewById(R.id.tv_title)).setText(mFullFormMTGObject.getContentList().get(0).getTitle() );
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        try {
+            outState.putParcelable("FullFormMTGObject", mFullFormMTGObject);
+        } catch (Exception e) {
+            Log.d(e.getClass().getName(), e.getMessage() );
+        }
     }
 
     @Override
@@ -99,8 +106,13 @@ public class MTGObjectActivity extends AppCompatActivity
             Log.d(tag, e.getMessage() );
         }
 
-        excludeMtgObjectChildByType(mFullFormMTGObject.getContent().get(0).getChildren(), MTGO_CHILD_STORY_NAVIGATION_TYPE);
+        excludeMtgObjectChildByType(mFullFormMTGObject.getContentList().get(0).getChildren(), MTGO_CHILD_STORY_NAVIGATION_TYPE);
 
+        populateUI();
+        initializeViewPager();
+    }
+
+    private void initializeViewPager() {
         PagerTabStrip pagerTabStrip = findViewById(R.id.pts_content);
         pagerTabStrip.setDrawFullUnderline(true);
         pagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.colorPrimaryDark) );
@@ -114,12 +126,10 @@ public class MTGObjectActivity extends AppCompatActivity
     }
 
 
-
-
     @Override
     public void onGridItemClick(int itemPosition) {
         Intent intent = new Intent(this, MTGObjectChildActivity.class);
-        intent.putExtra(getString(R.string.mtgobject_child_parcel_key), mFullFormMTGObject.getContent().get(0).getChildren().get(itemPosition) );
+        intent.putExtra(getString(R.string.mtgobject_child_parcel_key), mFullFormMTGObject.getContentList().get(0).getChildren().get(itemPosition) );
 
         startActivity(intent);
     }
