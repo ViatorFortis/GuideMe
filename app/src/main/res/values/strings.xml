@@ -33,4 +33,5 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cast_to_interface_exception_message">must implement %1$s</string>
+    <string name="point_image_content_descr">Point image</string>
 </resources>
