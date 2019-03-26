@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.viatorfortis.guideme.model.FullFormMTGObject;
+import com.viatorfortis.guideme.ui.MTGOMapFragment;
 import com.viatorfortis.guideme.ui.MTGObjectChildListFragment;
 import com.viatorfortis.guideme.ui.MTGObjectGeneralInfoFragment;
 
@@ -37,7 +38,7 @@ public class MTGObjectFragmentPagerAdapter extends FragmentPagerAdapter {
                 fragment = MTGObjectChildListFragment.newInstance(mFullFormMTGObject.getContentList().get(0).getChildren() );
                 break;
             case 2:
-                fragment = MTGObjectGeneralInfoFragment.newInstance("2");
+                fragment = MTGOMapFragment.newInstance();
         }
 
         return fragment;

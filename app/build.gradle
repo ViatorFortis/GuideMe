@@ -16,6 +16,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField('String', 'iziTravelApiKey', '"' + apiProperties['GuideMe_iziTravelApiKey'] + '"')
+
+        resValue 'string', 'maps_api_key', '"' + apiProperties['apiKey'] + '"'
     }
     buildTypes {
         release {
@@ -34,6 +36,7 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
 
     testImplementation 'junit:junit:4.12'
 
