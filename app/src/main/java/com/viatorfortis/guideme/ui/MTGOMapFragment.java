@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.viatorfortis.guideme.R;
 import com.viatorfortis.guideme.model.Child;
@@ -28,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MTGOMapFragment extends Fragment {
+
+    private final String tag = this.getClass().getSimpleName();
 
     private MapView mMapView;
     private GoogleMap mGoogleMap;
@@ -88,6 +92,7 @@ public class MTGOMapFragment extends Fragment {
                 getChildrenInfo(locationList, triggerZoneList);
 
                 addChildrenLocationsToMap(locationList);
+                addChildrenTriggerZonesToMap(triggerZoneList);
             }
         });
 
@@ -139,9 +144,7 @@ public class MTGOMapFragment extends Fragment {
                 }
 
                 if (child.getTriggerZones() != null) {
-                    for (TriggerZone triggerZone : child.getTriggerZones()) {
-                        triggerZoneList.add(triggerZone);
-                    }
+                    triggerZoneList.addAll(child.getTriggerZones() );
                 }
             }
         }
@@ -157,7 +160,45 @@ public class MTGOMapFragment extends Fragment {
         }
     }
 
+    public void addChildrenTriggerZonesToMap(List<TriggerZone> triggerZoneList) {
+        for (TriggerZone triggerZone : triggerZoneList) {
+            switch (triggerZone.getType()) {
+                case "circle":
 
+                    float lat = triggerZone.getCircleLatitude().floatValue();
+                    float lng = triggerZone.getCircleLongitude().floatValue();
+                    double radius = triggerZone.getCircleRadius();
+
+                    CircleOptions circleOptions = new CircleOptions().center(new LatLng(lat, lng) )
+                            .radius(radius)
+                            .strokeColor(getResources().getColor(R.color.colorAccent) )
+                            .strokeWidth(1);
+                    mGoogleMap.addCircle(circleOptions);
+
+                    break;
+
+                case "polygon":
+
+                    PolygonOptions polygonOptions = new PolygonOptions();
+
+                    for (String point : triggerZone.getPolygonCorners().split(";") ) {
+                        String[] pointPosition = point.split(",");
+                        polygonOptions.add(new LatLng(
+                                Float.parseFloat(pointPosition[0]),
+                                Float.parseFloat(pointPosition[1]) ) );
+                    }
+
+                    polygonOptions.strokeColor(getResources().getColor(R.color.colorAccent) )
+                            .strokeWidth(1);
+                    mGoogleMap.addPolygon(polygonOptions);
+
+                    break;
+
+                default:
+                    Log.d(tag, getString(R.string.message_trigger_zone_unidentified) );
+            }
+        }
+    }
 
     @Override
     public void onResume() {

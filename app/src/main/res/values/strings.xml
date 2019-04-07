@@ -35,4 +35,6 @@
     <string name="cast_to_interface_exception_message">must implement %1$s</string>
     <string name="point_image_content_descr">Point image</string>
     <string name="mtgo_type_story_navigation">story_navigation</string>
+
+    <string name="message_trigger_zone_unidentified">trigger zone type unidentified</string>
 </resources>
