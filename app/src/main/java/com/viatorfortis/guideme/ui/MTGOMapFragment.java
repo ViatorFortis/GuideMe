@@ -1,5 +1,6 @@
 package com.viatorfortis.guideme.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,8 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.viatorfortis.guideme.R;
 import com.viatorfortis.guideme.model.FullFormMTGObject;
 import com.viatorfortis.guideme.model.Map;
@@ -73,6 +76,7 @@ public class MTGOMapFragment extends Fragment {
                 mGoogleMap = mMap;
 
                 MoveCameraToMTGObjectBounds();
+                AddRouteToMap();
             }
         });
 
@@ -95,6 +99,22 @@ public class MTGOMapFragment extends Fragment {
         LatLngBounds mapBounds = new LatLngBounds(swLatLng, neLatLng);
 
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mapBounds, 0) );
+    }
+
+    private void AddRouteToMap() {
+        String routeString = mFullFormMTGObject.getMap().getRoute();
+        PolylineOptions polylineOptions = new PolylineOptions();
+
+        for (String point : routeString.split(";")) {
+            String [] pointPosition = point.split(",");
+            polylineOptions.add(new LatLng(
+                    Float.parseFloat(pointPosition[0]),
+                    Float.parseFloat(pointPosition[1]) ) );
+        }
+
+        polylineOptions.color(getResources().getColor(R.color.colorAccent) )
+                .width(5);
+        mGoogleMap.addPolyline(polylineOptions);
     }
 
     @Override
