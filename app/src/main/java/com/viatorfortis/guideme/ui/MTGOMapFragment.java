@@ -117,18 +117,25 @@ public class MTGOMapFragment extends Fragment {
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mapBounds, 0));
     }
 
+    private LatLng [] convertLatLngStringToArray(String latLngString) {
+        ArrayList <LatLng> latLngArrayList = new ArrayList<LatLng>();
+
+        for (String point : latLngString.split(";")) {
+            String[] pointPosition = point.split(",");
+            latLngArrayList.add(new LatLng(
+                    Float.parseFloat(pointPosition[0]),
+                    Float.parseFloat(pointPosition[1]) ) );
+        }
+
+        return latLngArrayList.toArray(new LatLng[latLngArrayList.size()]);
+    }
+
     private void AddRouteToMap() {
         String routeString = mFullFormMTGObject.getMap().getRoute();
         PolylineOptions polylineOptions = new PolylineOptions();
 
-        for (String point : routeString.split(";")) {
-            String[] pointPosition = point.split(",");
-            polylineOptions.add(new LatLng(
-                    Float.parseFloat(pointPosition[0]),
-                    Float.parseFloat(pointPosition[1])));
-        }
-
-        polylineOptions.color(getResources().getColor(R.color.colorAccent))
+        polylineOptions.add(convertLatLngStringToArray(routeString) )
+                .color(getResources().getColor(R.color.colorAccent) )
                 .width(5);
         mGoogleMap.addPolyline(polylineOptions);
     }
@@ -179,16 +186,11 @@ public class MTGOMapFragment extends Fragment {
 
                 case "polygon":
 
+                    String polygonCorners = triggerZone.getPolygonCorners();
                     PolygonOptions polygonOptions = new PolygonOptions();
 
-                    for (String point : triggerZone.getPolygonCorners().split(";") ) {
-                        String[] pointPosition = point.split(",");
-                        polygonOptions.add(new LatLng(
-                                Float.parseFloat(pointPosition[0]),
-                                Float.parseFloat(pointPosition[1]) ) );
-                    }
-
-                    polygonOptions.strokeColor(getResources().getColor(R.color.colorAccent) )
+                    polygonOptions.add(convertLatLngStringToArray(polygonCorners) )
+                            .strokeColor(getResources().getColor(R.color.colorAccent) )
                             .strokeWidth(1);
                     mGoogleMap.addPolygon(polygonOptions);
 
