@@ -179,7 +179,8 @@ public class MTGOMapFragment extends Fragment {
                     CircleOptions circleOptions = new CircleOptions().center(new LatLng(lat, lng) )
                             .radius(radius)
                             .strokeColor(getResources().getColor(R.color.colorAccent) )
-                            .strokeWidth(1);
+                            .strokeWidth(1)
+                            .fillColor(getResources().getColor(R.color.colorAccentTransparent) );
                     mGoogleMap.addCircle(circleOptions);
 
                     break;
@@ -191,7 +192,8 @@ public class MTGOMapFragment extends Fragment {
 
                     polygonOptions.add(convertLatLngStringToArray(polygonCorners) )
                             .strokeColor(getResources().getColor(R.color.colorAccent) )
-                            .strokeWidth(1);
+                            .strokeWidth(1)
+                            .fillColor(getResources().getColor(R.color.colorAccentTransparent) );
                     mGoogleMap.addPolygon(polygonOptions);
 
                     break;
