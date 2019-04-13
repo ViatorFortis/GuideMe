@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,7 @@ public class MTGObjectGeneralInfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_mtgobject_general_info, null);
 
         TextView descriptionTextView = view.findViewById(R.id.tv_description);
+        descriptionTextView.setMovementMethod(new ScrollingMovementMethod());
 
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N) {
             descriptionTextView.setText(Html.fromHtml(mDescription, Html.FROM_HTML_MODE_COMPACT));
