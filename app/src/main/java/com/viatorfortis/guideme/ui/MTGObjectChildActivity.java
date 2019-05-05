@@ -13,6 +13,9 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.viatorfortis.guideme.R;
 import com.viatorfortis.guideme.model.Child;
+import com.viatorfortis.guideme.model.Image;
+
+import java.util.List;
 
 import static com.viatorfortis.guideme.utils.IziTravelApi.buildStoryImageUri;
 
@@ -58,13 +61,35 @@ public class MTGObjectChildActivity extends AppCompatActivity {
 
         ( (TextView) findViewById(R.id.tv_title) ).setText(mChild.getTitle() );
         ( (TextView) findViewById(R.id.tv_desc) ).setText(mChild.getDesc() );
+        ( (TextView) findViewById(R.id.tv_content_provider) ).setText(mChild.getContentProvider().getName() );
+
+        if (mChild.getImages() != null
+                && mChild.getImages().size() > 0) {
+            loadImages();
+        }
+    }
+
+    private void loadImages() {
+        List<Image> imageList = mChild.getImages();
 
         ImageView pointImageView = findViewById(R.id.iv_point_image);
         Picasso.with(this)
-                .load(buildStoryImageUri(mChild.getContentProvider().getUuid(), mChild.getImages().get(0).getUuid(), "800x600") )
+                .load(buildStoryImageUri(mChild.getContentProvider().getUuid(), imageList.get(0).getUuid(), "800x600") )
                 .into(pointImageView);
 
-        ( (TextView) findViewById(R.id.tv_content_provider) ).setText(mChild.getContentProvider().getName() );
+        if (imageList.size() > 1) {
+            cacheImagesExceptFirst();
+        }
+    }
+
+    private void cacheImagesExceptFirst() {
+        List<Image> imageList = mChild.getImages();
+
+        for (int i = 1; i < imageList.size(); i++) {
+            Picasso.with(this)
+                    .load(buildStoryImageUri(mChild.getContentProvider().getUuid(), imageList.get(i).getUuid(), "800x600") )
+                    .fetch();
+        }
     }
 
     @Override
