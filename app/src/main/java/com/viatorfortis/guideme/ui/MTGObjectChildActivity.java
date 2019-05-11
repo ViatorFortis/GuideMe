@@ -75,19 +75,14 @@ public class MTGObjectChildActivity extends AppCompatActivity
         ( (TextView) findViewById(R.id.tv_title) ).setText(mChild.getTitle() );
         ( (TextView) findViewById(R.id.tv_desc) ).setText(mChild.getDesc() );
         ( (TextView) findViewById(R.id.tv_content_provider) ).setText(mChild.getContentProvider().getName() );
-
-        if (mChild.getImages() != null
-                && mChild.getImages().size() > 0) {
-            loadImages();
-        }
     }
 
     private void loadImages() {
-        List<Image> imageList = mChild.getImages();
+        List<Image> imageList = mFullFormChildMTGObject.getContentList().get(0).getImages();
 
         ImageView pointImageView = findViewById(R.id.iv_point_image);
         Picasso.with(this)
-                .load(buildStoryImageUri(mChild.getContentProvider().getUuid(), imageList.get(0).getUuid(), "800x600") )
+                .load(buildStoryImageUri(mFullFormChildMTGObject.getContentProvider().getUuid(), imageList.get(0).getUuid(), "800x600") )
                 .into(pointImageView);
 
         if (imageList.size() > 1) {
@@ -96,11 +91,11 @@ public class MTGObjectChildActivity extends AppCompatActivity
     }
 
     private void cacheImagesExceptFirst() {
-        List<Image> imageList = mChild.getImages();
+        List<Image> imageList = mFullFormChildMTGObject.getContentList().get(0).getImages();
 
         for (int i = 1; i < imageList.size(); i++) {
             Picasso.with(this)
-                    .load(buildStoryImageUri(mChild.getContentProvider().getUuid(), imageList.get(i).getUuid(), "800x600") )
+                    .load(buildStoryImageUri(mFullFormChildMTGObject.getContentProvider().getUuid(), imageList.get(i).getUuid(), "800x600") )
                     .fetch();
         }
     }
@@ -122,6 +117,12 @@ public class MTGObjectChildActivity extends AppCompatActivity
             mFullFormChildMTGObject = parseFullFormMTGObjectListJson(result).get(0);
         } catch (JsonSyntaxException e) {
             Log.d(tag, e.getMessage() );
+        }
+
+        List <Image> imageList = mFullFormChildMTGObject.getContentList().get(0).getImages();
+        if (imageList != null
+                && imageList.size() > 0) {
+            loadImages();
         }
     }
 }
