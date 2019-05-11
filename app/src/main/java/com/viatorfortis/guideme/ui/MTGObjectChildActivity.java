@@ -5,23 +5,32 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonSyntaxException;
 import com.squareup.picasso.Picasso;
 import com.viatorfortis.guideme.R;
 import com.viatorfortis.guideme.model.Child;
+import com.viatorfortis.guideme.model.FullFormMTGObject;
 import com.viatorfortis.guideme.model.Image;
+import com.viatorfortis.guideme.utils.LoadFullFormMTGObjectByIdTask;
 
 import java.util.List;
 
 import static com.viatorfortis.guideme.utils.IziTravelApi.buildStoryImageUri;
+import static com.viatorfortis.guideme.utils.JsonUtils.parseFullFormMTGObjectListJson;
 
-public class MTGObjectChildActivity extends AppCompatActivity {
+public class MTGObjectChildActivity extends AppCompatActivity
+        implements LoadFullFormMTGObjectByIdTask.OnTaskCompleteListener {
+
+    private final String tag = this.getClass().getSimpleName();
 
     private Child mChild;
+    private FullFormMTGObject mFullFormChildMTGObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +45,10 @@ public class MTGObjectChildActivity extends AppCompatActivity {
 
             return;
         }
+
+        LoadFullFormMTGObjectByIdTask loadFullFormMTGObjectByIdTask = new LoadFullFormMTGObjectByIdTask(this);
+        String [] loadParameters = {mChild.getUuid(), "en"};
+        loadFullFormMTGObjectByIdTask.execute(loadParameters);
 
 //        Toolbar appBar = findViewById(R.id.tb_mtgobject_child);
 //        setSupportActionBar(appBar);
@@ -101,5 +114,14 @@ public class MTGObjectChildActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTaskComplete(String result) {
+        try {
+            mFullFormChildMTGObject = parseFullFormMTGObjectListJson(result).get(0);
+        } catch (JsonSyntaxException e) {
+            Log.d(tag, e.getMessage() );
+        }
     }
 }
